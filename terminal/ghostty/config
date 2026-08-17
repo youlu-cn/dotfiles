@@ -1,32 +1,182 @@
 # ==========================================
-# 1. 字体与排版 (需配合 Nerd Font 显示 Starship 符号)
+# 1. 字体与排版
+# 需配合 Nerd Font，才能正确显示 Starship / eza 等图标
 # ==========================================
+
+# 主字体（Maple Mono Nerd Font 中文版）
 font-family = "Maple Mono NF CN"
-font-size = 16
+
+# 字号（点）
+font-size = 12
+
+# 关闭连字相关 OpenType 特性，写代码时字符更清晰、不易误读
+# -calt: 关闭上下文替代  -liga: 关闭标准连字  -dlig: 关闭可选连字
 font-feature = -calt, -liga, -dlig
 
-# ==========================================
-# 2. 窗口与外观 (极简沉浸流，去除多余边框)
-# ==========================================
-theme = "Rose Pine Dawn"
-window-padding-x = 6
-window-padding-y = 4
-window-padding-balance = true
+# 字体略加粗，小字号下更易读（尤其 Retina 屏）
+font-thicken = true
+
 
 # ==========================================
-# 3. 行为与性能 (Neovim / Codex / Claude 高频开发优化)
+# 2. 主题与外观
 # ==========================================
-scrollback-limit = 500000000
-copy-on-select = true
+
+# 跟随系统外观自动切换：浅色用 Rose Pine Dawn，深色用 Rose Pine
+theme = light:Rose Pine Dawn,dark:Rose Pine
+
+# 背景不透明度（1.0 = 不透明，0.95 = 轻微透明）
+background-opacity = 0.95
+
+# macOS 背景模糊（毛玻璃效果），需配合 background-opacity < 1
+background-blur = true
+
+# 最低对比度，避免主题颜色过浅导致文字难读
+minimum-contrast = 1.2
+
+# 使用 Display P3 广色域（现代 Mac 屏幕）
+window-colorspace = display-p3
+
+# 未聚焦的分屏变暗，多 split 时更容易分辨当前窗格
+unfocused-split-opacity = 0.85
+
+
+# ==========================================
+# 3. 窗口与布局
+# ==========================================
+
+# 左右内边距（像素）
+window-padding-x = 6
+
+# 上下内边距（像素）
+window-padding-y = 4
+
+# 内边距在分屏间均衡分配，避免某些窗格视觉上更挤
+window-padding-balance = true
+
+# 记住窗口位置与大小，下次启动恢复
+window-save-state = always
+
+# macOS 标题栏透明，更沉浸
+macos-titlebar-style = transparent
+
+# 新窗口继承当前窗口的字号（避免手动调过字号后新窗口又变回去）
+window-inherit-font-size = true
+
+# 关闭最后一个窗口后不退出 App，方便后台常驻
+quit-after-last-window-closed = false
+
+
+# ==========================================
+# 4. 光标
+# ==========================================
+
+# 光标样式：bar = 竖线（适合 Neovim 插入模式观感）
+# 可选：block / bar / underline / block_hollow
+cursor-style = bar
+
+# 关闭光标闪烁，长时间盯屏更省眼
+cursor-style-blink = false
+
+
+# ==========================================
+# 5. 鼠标与剪贴板
+# ==========================================
+
+# 选中文本后自动复制到剪贴板
+copy-on-select = clipboard
+
+# 复制时去掉行尾空格
 clipboard-trim-trailing-spaces = true
+
+# 粘贴多行/可疑内容时提示确认，降低误粘贴风险
 clipboard-paste-protection = true
+
+# 滚轮灵敏度倍率
 mouse-scroll-multiplier = 2
+
+# 打字时自动隐藏鼠标指针
 mouse-hide-while-typing = true
+
+# Shift + 鼠标不捕获（方便在程序占用鼠标时仍能选中文本）
 mouse-shift-capture = never
+
+# 终端内 URL 可点击打开
+link-url = true
+
+
+# ==========================================
+# 6. 滚动与历史
+# ==========================================
+
+# 滚动缓冲区大小（字节）。约 100MB，够用且不占过多内存
+# 原 500000000（约 500MB）偏大，可按机器内存再调
+scrollback-limit = 100000000
+
+
+# ==========================================
+# 7. Shell 集成与工作目录
+# ==========================================
+
+# 自动检测 shell 并启用集成（zsh/bash/fish 等）
 shell-integration = detect
+
+# 集成功能：
+#   cursor     - 在 prompt 处调整光标样式
+#   sudo       - sudo 时保留 terminfo
+#   title      - 根据目录/命令更新窗口标题
+#   ssh-env    - SSH 时传递较合理的环境变量
+#   ssh-terminfo - 远程自动处理 terminfo
+# 若不想 prompt 强制改光标，可把 cursor 改成 no-cursor
 shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo
+
+# 新窗口继承当前工作目录
 window-inherit-working-directory = true
+
+# 新标签页继承当前工作目录
 tab-inherit-working-directory = true
+
+# 新分屏继承当前工作目录
 split-inherit-working-directory = true
+
+
+# ==========================================
+# 8. 安全与确认
+# ==========================================
+
+# 关闭仍有进程的标签/窗格时弹出确认，避免误关长任务
 confirm-close-surface = true
+
+# 检测到密码输入时自动开启 macOS Secure Input（防键盘监听）
+macos-auto-secure-input = true
+
+# Secure Input 开启时显示视觉提示
+macos-secure-input-indication = true
+
+# 左 Option 当作 Alt（方便 Emacs/终端快捷键；右 Option 仍可输入特殊字符）
 macos-option-as-alt = left
+
+
+# ==========================================
+# 9. 快捷键
+# 格式：keybind = 修饰键+按键=动作
+# 查看全部默认快捷键：ghostty +list-keybinds
+# ==========================================
+
+# --- 分屏 ---
+# ⌘D：向右分屏
+keybind = cmd+d=new_split:right
+# ⌘⇧D：向下分屏
+keybind = cmd+shift+d=new_split:down
+# ⌘⌃ + HJKL：分屏焦点切换
+keybind = cmd+ctrl+h=goto_split:left
+keybind = cmd+ctrl+j=goto_split:bottom
+keybind = cmd+ctrl+k=goto_split:top
+keybind = cmd+ctrl+l=goto_split:right
+
+# --- 全局下拉终端 ---
+# ⌘`：任意 App 中呼出/收起 Quick Terminal
+keybind = global:cmd+grave_accent=toggle_quick_terminal
+
+# --- 配置 ---
+# ⌘⇧,：重新加载配置（多数项即时生效）
+keybind = cmd+shift+comma=reload_config
