@@ -52,8 +52,6 @@ fi
 alias gst="git status -sb"
 alias gco="git checkout"
 alias gcm="git commit -m"
-alias docker="podman"
-alias docker-compose="podman-compose"
 alias dart="fvm dart"
 alias flutter="fvm flutter"
 alias fjbuild="fvm dart run build_runner build --delete-conflicting-outputs"
